@@ -275,17 +275,17 @@
             
             <div class="price-option">
                 <input type="radio" id="bgmi-499" name="bgmi-price" value="99" 
-                       data-features="Basic ESP (Player Outline only), Anti-Ban v1.0, 1 Day Access" onchange="updateProduct('bgmi')">
+                       data-features="• FEATURES✅, Esp, Esp World, Esp Items, Silent Aim, Prediction, Visibility, Memory Features, And Much More! With Highly Customizable Esp." onchange="updateProduct('bgmi')">
                 <label for="bgmi-499">₹499 - Trial Pack (1 Week)</label>
             </div>
             <div class="price-option">
                 <input type="radio" id="bgmi-1299" name="bgmi-price" value="199" 
-                       data-features="Full ESP (Loot, Vehicle, Player Info), No Recoil (Advanced), Secure 7 Day Access" onchange="updateProduct('bgmi')">
+                       data-features="• FEATURES✅, Esp Basic, Esp World Limited, Silent Aim Basic, Prediction Basic, Memory Features, Plus More Exclusive Content!" onchange="updateProduct('bgmi')">
                 <label for="bgmi-1299">₹1299 - Standard Pack (1 Month)</label>
             </div>
             <div class="price-option">
                 <input type="radio" id="bgmi-1899" name="bgmi-price" value="999" 
-                       data-features="VIP Aimbot (Head/Body), Magic Bullet, Full Bypass Key, Dedicated Support" onchange="updateProduct('bgmi')">
+                       data-features="• FEATURES✅, Esp, Esp World, Esp Items, Silent Aim, Prediction, Visibility, Super BulletTrack 360°, Memory Features, And Much More! With Highly Customizable Esp." onchange="updateProduct('bgmi')">
                 <label for="bgmi-1899">₹1899 - FULL Session</label>
             </div>
             
@@ -302,17 +302,17 @@
             
             <div class="price-option">
                 <input type="radio" id="sf-399" name="scarfall-price" value="99" 
-                       data-features="Wallhack (See through walls), Limited God Mode, 1 Day Access" onchange="updateProduct('scarfall')">
+                       data-features="Features :, 1.Location, 2.Wide View, 3.Silent Aim (Head), 4.Silent Aim (Body), 5. Black Body, 7.SkyShot (For Paid Users)" onchange="updateProduct('scarfall')">
                 <label for="sf-399">₹399 - Trial Pack (1 Week)</label>
             </div>
             <div class="price-option">
                 <input type="radio" id="sf-799" name="scarfall-price" value="199" 
-                       data-features="Full Speed Hack, Zero Ban Risk (7 Days), Automatic Health Regeneration" onchange="updateProduct('scarfall')">
+                       data-features="Features :, 1.Location, 2.Wide View, 3.Silent Aim (Head/Body), 4.Black Body, 5.Basic Speed Boost, 6.Access to VIP Servers" onchange="updateProduct('scarfall')">
                 <label for="sf-799">₹799 - Standard Pack (1 Month)</label>
             </div>
             <div class="price-option">
                 <input type="radio" id="sf-999" name="scarfall-price" value="999" 
-                       data-features="Ultimate God Mode (Permanent), Flying Hack, Auto Update Support, Priority Key" onchange="updateProduct('scarfall')">
+                       data-features="Features :, 1.Location, 2.Wide View, 3.Silent Aim (Head), 4.Silent Aim (Body), 5. Black Body, 6.Unlimited Bullet (For Paid Users), 7.SkyShot (For Paid Users), 8. Fly Hack, 9. FLASH Speed (Ultra)" onchange="updateProduct('scarfall')">
                 <label for="sf-999">₹999 - FULL Session</label>
             </div>
             
@@ -334,13 +334,35 @@
 
             if (selectedPriceInput) {
                 // 1. Show features
+                // NOTE: We are replacing the separator to correctly split your long feature strings
                 const featuresText = selectedPriceInput.getAttribute('data-features');
-                const featuresArray = featuresText.split(', ');
+                // Use a custom separator for splitting: comma space (', ') for standard list
+                // For your custom list, we'll split by comma followed by a potential space,
+                // and then manually add the first item if it contains the "FEATURES" header.
+                
+                let featuresArray = [];
+                // Special handling for the header line if it exists
+                if (featuresText.includes('• FEATURES✅') || featuresText.includes('Features :')) {
+                    const parts = featuresText.split(', ');
+                    if (parts[0].includes('• FEATURES✅') || parts[0].includes('Features :')) {
+                        // Add the header as the first list item
+                        featuresArray.push(parts[0]);
+                        // Add the rest of the parts
+                        featuresArray = featuresArray.concat(parts.slice(1));
+                    } else {
+                        featuresArray = parts;
+                    }
+                } else {
+                    featuresArray = featuresText.split(', ');
+                }
+
+
                 
                 featuresList.innerHTML = ''; 
                 featuresArray.forEach(feature => {
                     const li = document.createElement('li');
-                    li.textContent = feature;
+                    // Remove leading/trailing spaces for clean display
+                    li.textContent = feature.trim(); 
                     featuresList.appendChild(li);
                 });
 
