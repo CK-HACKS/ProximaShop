@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - PROXIMA SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ================================================= */
+        /* 1. GENERAL & FONTS */
+        /* ================================================= */
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #e6eef5; /* Light blue-grey background */
+            color: #333; 
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ================================================= */
+        /* 2. MAIN CONTAINER & HEADER */
+        /* ================================================= */
+        .payment-box { 
+            background-color: white; 
+            padding: 40px; 
+            border-radius: 16px; 
+            max-width: 450px; /* Slightly narrower for focus */
+            width: 90%;
+            margin: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1); 
+            text-align: center;
+            border-top: 5px solid #173f5f; /* Accent color from shop page */
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .payment-box h1 { 
+            font-size: 2.2em; 
+            color: #173f5f; 
+            margin-bottom: 5px; 
+            font-weight: 700;
+        }
+        
+        #product-display { 
+            font-size: 1.3em; 
+            font-weight: 800; 
+            color: #2ecc71; /* Success Green */
+            padding: 10px 0 20px 0;
+            border-bottom: 2px dashed #eee;
+            margin-bottom: 25px;
+        }
+
+        /* ================================================= */
+        /* 3. TIMER STYLING (CRITICAL FOCUS) */
+        /* ================================================= */
+        #timer-label { 
+            font-size: 1em; 
+            color: #555; 
+            margin-bottom: 10px; 
+            font-weight: 600;
+        }
+        #timer { 
+            font-size: 3.5em; 
+            color: #e74c3c; /* Alert Red */
+            font-weight: 800; 
+            margin-bottom: 30px; 
+            border: 4px solid #e74c3c; 
+            background-color: #fcebeb;
+            padding: 10px 20px; 
+            display: inline-block; 
+            border-radius: 10px; 
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+            transition: all 0.5s ease;
+        }
+        
+        /* ================================================= */
+        /* 4. QR AND INSTRUCTIONS */
+        /* ================================================= */
+        .qr-section p {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #555;
+            font-weight: 600;
+        }
+        .qr-image { 
+            max-width: 90%; 
+            width: 250px; /* Fixed size for better look */
+            height: auto; 
+            border: 6px solid #3498db; /* Primary Blue */
+            border-radius: 15px; 
+            margin-bottom: 30px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .instructions h3 { 
+            color: #173f5f; 
+            border-bottom: 2px solid #ddd; 
+            padding-bottom: 10px; 
+            margin-top: 25px;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        
+        .step {
+            background-color: #f7f9fc;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 5px solid #2ecc71;
+            text-align: left;
+            transition: background-color 0.3s;
+        }
+        .step:hover {
+            background-color: #f0f4f7;
+        }
+
+        .step-heading {
+            font-weight: 700;
+            color: #173f5f;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .step-heading span {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: #2ecc71;
+        }
+
+        .telegram-link { 
+            font-weight: 700; 
+            color: white; 
+            background-color: #3498db; /* Telegram Blue */
+            display: block;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none; 
+            font-size: 1.2em; 
+            transition: background-color 0.2s, transform 0.2s; 
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.4);
+        }
+        .telegram-link:hover { 
+            background-color: #2980b9; 
+            transform: translateY(-2px);
+        }
+        
+        .note { 
+            color: #e74c3c; /* Alert Red */
+            font-style: normal; 
+            margin-top: 25px; 
+            font-weight: 600;
+            padding: 10px;
+            border: 1px dashed #e74c3c;
+            border-radius: 5px;
+        }
+
+        /* Keyframe Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="payment-box">
+        <h1>Secure Checkout</h1>
+        
+        <p id="product-display" style="font-size: 1.2em; font-weight: 500; color: #28a745;">
+            Loading Product Details...
+        </p>
+        
+        <p id="timer-label">⏳ Payment Window Expiration:</p>
+        <div id="timer">05:00</div>
+
+        <div class="qr-section">
+            <p>Scan the **UPI QR Code** using any payment app to pay the exact amount:</p>
+            <img src="https://i.postimg.cc/NLfKYTNv/IMG-20251030-183444.jpg" alt="UPI Payment QR Code" class="qr-image"> 
+        </div>
+
+        <div class="instructions">
+            <h3>🔑 Key Activation Steps</h3>
+
+            <div class="step">
+                <p class="step-heading"><span>1️⃣</span> Complete Payment</p>
+                <p>Use **Google Pay, PhonePe, Paytm, or BHIM UPI** to scan the QR code above and complete your payment.</p>
+            </div>
+            
+            <div class="step">
+                <p class="step-heading"><span>2️⃣</span> Send Proof (Mandatory)</p>
+                <p>Payment successful hone ke **turant baad**, payment confirmation ka **screenshot** bhejein:</p>
+                <a href="https://t.me/ProximaOwner" target="_blank" class="telegram-link">
+                    SEND PROOF NOW 🚀 (@ProximaOwner on Telegram click here)
+                </a>
+            </div>
+            
+            <p class="note">⚠️ **IMPORTANT:** Proof na bhejney par aapko hack key nahi milegi. Key milne mein 5-10 minutes lag sakte hain.</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to start the 5-minute timer
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            
+            const countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (timer <= 60) {
+                    // Change color to alert when less than 1 minute remains
+                    display.style.borderColor = '#f39c12';
+                    display.style.color = '#f39c12';
+                }
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    display.textContent = "EXPIRED";
+                    display.style.backgroundColor = '#e74c3c';
+                    display.style.color = 'white';
+                    display.style.boxShadow = 'none';
+                    alert("Payment window expired! Please go back to the homepage and select your product again.");
+                }
+            }, 1000);
+        }
+
+        // Logic to run when the page loads
+        window.onload = function () {
+            // 1. Start the Timer (5 minutes = 300 seconds)
+            const fiveMinutes = 60 * 5;
+            const timerDisplay = document.querySelector('#timer');
+            startTimer(fiveMinutes, timerDisplay);
+            
+            // 2. Display Product Details from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const hack = urlParams.get('hack');
+            const price = urlParams.get('price');
+            const productDisplay = document.querySelector('#product-display');
+
+            if (hack && price) {
+                // Formatting product name and price
+                const formattedHack = hack.toUpperCase();
+                productDisplay.innerHTML = `You are paying for: <span style="color: #173f5f;">**${formattedHack}**</span> - <span style="color: #2ecc71;">**₹${price}**</span>`;
+            } else {
+                 productDisplay.textContent = `Please pay the amount as per your selection.`;
+            }
+        };
+
+    </script>
+
+</body>
+</html>

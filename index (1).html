@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROXIMA SHOP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ================================================= */
+        /* 1. GENERAL & FONTS */
+        /* ================================================= */
+        body { 
+            font-family: 'Poppins', sans-serif; /* Using a modern font */
+            margin: 0; 
+            padding: 0; 
+            background-color: #f5f7fa; 
+            color: #333; 
+            overflow-x: hidden; 
+        }
+        
+        /* ================================================= */
+        /* 2. HEADER & LOGO (FIXED) */
+        /* ================================================= */
+        header { 
+            background-color: #173f5f; 
+            color: white; 
+            padding: 25px 20px; 
+            text-align: center; 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); 
+            position: relative;
+            /* Added min-height to ensure space is available */
+            min-height: 80px; 
+            display: flex;
+            align-items: center; /* Center items vertically */
+            justify-content: center; /* Center items horizontally */
+        }
+        
+        /* FIX: Ensure the Logo Container is positioned on the left */
+        .logo-container {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            /* FIX: Ensure logo is on top of the text */
+            z-index: 10; 
+        }
+        
+        /* HEADER TEXT STYLING: Bold and Glow Effect */
+        header h1 { 
+            margin: 0; 
+            font-size: 2.5em; 
+            font-weight: 800; /* Extra bold */
+            /* FIX: Push the header text to the right to avoid the logo */
+            padding-left: 70px; /* Space for the 50px logo + padding */
+            /* GLOW EFFECT: Text shadow for glow */
+            text-shadow: 
+                0 0 5px rgba(255, 255, 255, 0.7), /* Light white glow */
+                0 0 10px rgba(255, 255, 255, 0.5); /* Wider white glow */
+            /* Ensure the text is below the logo (lower z-index) */
+            position: relative;
+            z-index: 5;
+        }
+        
+        /* Logo Styling */
+        .logo {
+            width: 50px; 
+            height: 50px;
+            border-radius: 50%; 
+            border: 3px solid #ffc107; 
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            display: block; /* Ensures proper sizing */
+        }
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* ================================================= */
+        /* 3. PRODUCT LAYOUT & BOXES */
+        /* ================================================= */
+        .product-container { 
+            display: flex; 
+            justify-content: center; 
+            padding: 40px 15px; 
+            gap: 30px; 
+            flex-wrap: wrap; 
+        }
+        .product-box { 
+            background-color: white; 
+            border: none;
+            padding: 30px; 
+            margin: 10px 0; 
+            width: 45%; 
+            min-width: 340px; 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); 
+            border-radius: 15px; 
+            transition: all 0.5s ease-in-out;
+            animation: fadeIn 1s ease-out; 
+        }
+        .product-box:hover { 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); 
+            transform: translateY(-8px); 
+        }
+        
+        .product-box h2 { 
+            text-align: center; 
+            color: #e54c3c; 
+            margin-top: 0; 
+            border-bottom: 2px solid #e54c3c; 
+            padding-bottom: 10px; 
+            font-size: 1.8em;
+        }
+        .product-box h2 .emoji {
+             transition: transform 0.3s;
+             display: inline-block;
+        }
+        .product-box:hover h2 .emoji {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        /* ================================================= */
+        /* 4. PRICE OPTIONS & FEATURES (Interactive Design) */
+        /* ================================================= */
+        .price-option { 
+            margin: 20px 0; 
+            padding: 18px; 
+            border: 2px solid #ddd; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            background-color: #ffffff; 
+            position: relative;
+            overflow: hidden;
+        }
+        .price-option:hover { 
+            border-color: #ffc107; 
+            transform: translateX(5px);
+        }
+        .price-option input[type="radio"] { display: none; }
+        
+        .price-option input[type="radio"]:checked + label { 
+            font-weight: 700; 
+            color: white; 
+            background-color: #2ecc71; 
+            display: block; 
+            padding: 15px; 
+            border-radius: 7px;
+            margin: -16px -16px; 
+            box-shadow: 0 2px 10px rgba(46, 204, 113, 0.5);
+            animation: pulse 0.8s;
+        }
+        .price-option label { display: block; cursor: pointer; font-size: 1.1em; }
+
+        /* Features List Styling (Dynamic Toggle) */
+        .features-list { 
+            margin-top: 25px; 
+            padding: 20px; 
+            border: 3px solid #2ecc71; 
+            background-color: #e8f9ee; 
+            border-radius: 10px; 
+            display: none; 
+            animation: slideDown 0.4s ease-out forwards; 
+            opacity: 0;
+        }
+        .features-list p { 
+            font-weight: bold; 
+            color: #2ecc71; 
+            margin-bottom: 10px; 
+            font-size: 1.1em;
+        }
+        .features-list ul { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            text-align: left;
+        }
+        .features-list ul li { 
+            margin-bottom: 8px; 
+            padding-bottom: 5px; 
+            color: #444; 
+            display: flex;
+            align-items: center;
+        }
+        .features-list ul li::before {
+            content: '✓';
+            color: #2ecc71;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        /* ================================================= */
+        /* 5. BUTTON STYLING & ANIMATIONS */
+        /* ================================================= */
+        .proceed-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 20px; 
+            background-color: #3498db; 
+            color: white; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 1.3em; 
+            font-weight: bold; 
+            cursor: not-allowed; 
+            margin-top: 35px; 
+            transition: all 0.3s ease; 
+            opacity: 0.7;
+        }
+        .proceed-btn:not(:disabled) { 
+            background-color: #ffc107; 
+            color: #173f5f; 
+            cursor: pointer; 
+            opacity: 1; 
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+        .proceed-btn:not(:disabled):hover { 
+            background-color: #e6b000; 
+            transform: scale(1.02);
+        }
+
+        /* ================================================= */
+        /* 6. KEYFRAMES FOR ANIMATIONS */
+        /* ================================================= */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(46, 204, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
+        }
+
+        /* ================================================= */
+        /* 7. MOBILE VIEW */
+        /* ================================================= */
+        @media (max-width: 768px) {
+            .product-box { 
+                width: 95%; 
+                min-width: auto; 
+                margin: 10px 0;
+            }
+            .product-container { 
+                padding: 20px 10px; 
+                gap: 20px;
+            }
+            .logo-container {
+                left: 10px;
+            }
+            /* FIX for mobile: adjust header padding */
+            header h1 {
+                padding-left: 60px; /* Less space needed on mobile */
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="https://i.postimg.cc/JDXBXWBY/IMG-20251030-183419-740.jpg" alt="Proxima Shop Logo" class="logo">
+        </div>
+        <h1>PROXIMA SHOP</h1>
+    </header>
+
+    <div class="product-container">
+        
+        <div class="product-box" id="bgmi-hack">
+            <h2><span class="emoji">🔥</span> BGMI HACK - ESP & Aimbot</h2>
+            
+            <div class="price-option">
+                <input type="radio" id="bgmi-99" name="bgmi-price" value="99" 
+                       data-features="Basic ESP (Player Outline only), Anti-Ban v1.0, 1 Day Access" onchange="updateProduct('bgmi')">
+                <label for="bgmi-99">₹499 - Trial Pack (1 Week)</label>
+            </div>
+            <div class="price-option">
+                <input type="radio" id="bgmi-199" name="bgmi-price" value="199" 
+                       data-features="Full ESP (Loot, Vehicle, Player Info), No Recoil (Advanced), Secure 7 Day Access" onchange="updateProduct('bgmi')">
+                <label for="bgmi-199">₹1299 - Standard Pack (1 Month)</label>
+            </div>
+            <div class="price-option">
+                <input type="radio" id="bgmi-999" name="bgmi-price" value="999" 
+                       data-features="VIP Aimbot (Head/Body), Magic Bullet, Full Bypass Key, Dedicated Support" onchange="updateProduct('bgmi')">
+                <label for="bgmi-999">₹1899 - FULL Session</label>
+            </div>
+            
+            <div id="bgmi-features" class="features-list">
+                <p>✨ Selected Features Include:</p>
+                <ul id="bgmi-features-list"></ul>
+            </div>
+            
+            <button class="proceed-btn" id="bgmi-proceed" disabled onclick="redirectToPayment('BGMI')">Proceed to Payment</button>
+        </div>
+
+        <div class="product-box" id="scarfall-hack">
+            <h2><span class="emoji">⚔️</span> SCARFALL HACK - Speed & Wall</h2>
+            
+            <div class="price-option">
+                <input type="radio" id="sf-99" name="scarfall-price" value="99" 
+                       data-features="Wallhack (See through walls), Limited God Mode, 1 Day Access" onchange="updateProduct('scarfall')">
+                <label for="sf-99">₹399 - Trial Pack (1 Week)</label>
+            </div>
+            <div class="price-option">
+                <input type="radio" id="sf-199" name="scarfall-price" value="199" 
+                       data-features="Full Speed Hack, Zero Ban Risk (7 Days), Automatic Health Regeneration" onchange="updateProduct('scarfall')">
+                <label for="sf-199">₹799 - Standard Pack (1 Month)</label>
+            </div>
+            <div class="price-option">
+                <input type="radio" id="sf-999" name="scarfall-price" value="999" 
+                       data-features="Ultimate God Mode (Permanent), Flying Hack, Auto Update Support, Priority Key" onchange="updateProduct('scarfall')">
+                <label for="sf-999">₹999 - FULL Session</label>
+            </div>
+            
+            <div id="scarfall-features" class="features-list">
+                <p>✨ Selected Features Include:</p>
+                <ul id="scarfall-features-list"></ul>
+            </div>
+            
+            <button class="proceed-btn" id="scarfall-proceed" disabled onclick="redirectToPayment('SCARFALL')">Proceed to Payment</button>
+        </div>
+    </div>
+
+    <script>
+        function updateProduct(productName) {
+            const selectedPriceInput = document.querySelector(`input[name="${productName}-price"]:checked`);
+            const featuresDiv = document.getElementById(`${productName}-features`);
+            const featuresList = document.getElementById(`${productName}-features-list`);
+            const proceedBtn = document.getElementById(`${productName}-proceed`);
+
+            if (selectedPriceInput) {
+                // 1. Show features
+                const featuresText = selectedPriceInput.getAttribute('data-features');
+                const featuresArray = featuresText.split(', ');
+                
+                featuresList.innerHTML = ''; 
+                featuresArray.forEach(feature => {
+                    const li = document.createElement('li');
+                    li.textContent = feature;
+                    featuresList.appendChild(li);
+                });
+
+                // Display with opacity/animation for smooth effect
+                featuresDiv.style.display = 'block';
+                featuresDiv.style.opacity = 0;
+                setTimeout(() => { featuresDiv.style.opacity = 1; }, 10);
+
+                // 2. Activate button
+                proceedBtn.disabled = false;
+                proceedBtn.setAttribute('data-price', selectedPriceInput.value);
+
+            } else {
+                featuresDiv.style.display = 'none';
+                featuresDiv.style.opacity = 0;
+                proceedBtn.disabled = true;
+                proceedBtn.removeAttribute('data-price');
+            }
+        }
+
+        function redirectToPayment(product) {
+            const proceedBtn = document.getElementById(`${product.toLowerCase()}-proceed`);
+            const price = proceedBtn.getAttribute('data-price');
+            
+            if (price) {
+                window.location.href = `payment.html?hack=${product}&price=${price}`;
+            }
+        }
+    </script>
+</body>
+</html>
